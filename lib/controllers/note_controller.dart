@@ -38,6 +38,7 @@ class NoteController extends GetxController {
           content: doc['content'],
           location: doc['location'],
           fileUrl: doc['fileUrl'],
+          userId: doc['userId'],
           createdAt: doc['createdAt'].toDate(),
         );
       }).toList();
@@ -132,9 +133,6 @@ class NoteController extends GetxController {
     Get.offAllNamed('/login');
   }
 }
-
-
-
 
 //import 'package:geocoding/geocoding.dart';
 

@@ -4,6 +4,7 @@ class Note {
   final String content;
   final String? location;
   final String? fileUrl;
+  final String? userId;
   final DateTime createdAt;
 
   Note({
@@ -12,6 +13,7 @@ class Note {
     required this.content,
     this.location,
     this.fileUrl,
+    this.userId,
     required this.createdAt,
   });
 }
