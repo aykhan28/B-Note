@@ -7,6 +7,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import '../models/note.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:geocoding/geocoding.dart';
 
 class NoteController extends GetxController {
   var notes = <Note>[].obs;
@@ -77,20 +78,44 @@ class NoteController extends GetxController {
     }
   }
 
+  /// **Konumu açık adres formatına çevirir**
+  Future<String> _getAddressFromLatLng(Position position) async {
+    try {
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+          position.latitude, position.longitude);
+      Placemark place = placemarks[0];
+
+      // Sokak, şehir, ülke bilgilerini birleştirerek adres oluşturuyoruz.
+      String address =
+          "${place.street}, ${place.locality}, ${place.country}";
+      return address;
+    } catch (e) {
+      return "Unknown Location";
+    }
+  }
+
+  /// **Cihazın mevcut konumunu alır ve açık adres olarak saklar**
   Future<void> fetchCurrentLocation() async {
     try {
       final permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
         await Geolocator.requestPermission();
       }
-      final position = await Geolocator.getCurrentPosition();
-      location.value = '${position.latitude}, ${position.longitude}';
+
+      final position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+
+      // Konumu açık adres formatına çeviriyoruz
+      location.value = await _getAddressFromLatLng(position);
+      Get.snackbar("Location Updated", location.value,
+          snackPosition: SnackPosition.BOTTOM);
     } catch (e) {
       Get.snackbar("Error", "Failed to fetch location: $e",
           snackPosition: SnackPosition.BOTTOM);
     }
   }
 
+  /// **Yeni not eklerken konumu da kaydediyor**
   void addNote(String title, String content, PlatformFile? selectedFile) async {
     try {
       isLoading(true);
@@ -101,7 +126,7 @@ class NoteController extends GetxController {
       await _firestore.collection('notes').add({
         'title': title,
         'content': content,
-        'location': location.value,
+        'location': location.value, // Konum açık adres formatında kaydediliyor
         'fileUrl': fileUrl,
         'userId': currentUser?.uid,
         'createdAt': FieldValue.serverTimestamp(),
@@ -133,18 +158,3 @@ class NoteController extends GetxController {
     Get.offAllNamed('/login');
   }
 }
-
-//import 'package:geocoding/geocoding.dart';
-
-  //Future<String> _getAddressFromLatLng(Position position) async {
-  //  try {
-  //    List<Placemark> placemarks = await placemarkFromCoordinates(
-  //        position.latitude, position.longitude);
-  //    Placemark place = placemarks[0];
-  //
-  //    addr = "${place.street}, ${place.locality}, ${place.country}";
-  //    return addr;
-  //  } catch (e) {
-  //    return "Unknown Location";
-  //  }
-  //}

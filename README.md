@@ -1,16 +1,28 @@
-# noteapp
+# 📝 B-Note - Modern Note-Taking App
 
-A new Flutter project.
+B-Note is a **modern and minimalist** note-taking application.
+With Firebase integration, you can **securely store your notes** in the cloud.
 
-## Getting Started
+## 🚀 Features
 
-This project is a starting point for a Flutter application.
+✅ **Fast and Lightweight with GetX**
+✅ **Firebase Firestore for Note Storage and Updates**
+✅ **Firebase Storage for File Uploads**
+✅ **Geolocator & Geocoding for Location Detection**
+✅ **Sleek and Dark Themed UI**
+✅ **Secure User Authentication (Auth)**
+✅ **Modern UI/UX Design**
 
-A few resources to get you started if this is your first Flutter project:
+---
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### **Login Page**
+<img src="/screenshots/login.png" alt="Login Screen" width="250"/>
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### **Home Page**
+<img src="/screenshots/home.png" alt="Home Screen" width="250"/>
+
+### **Create Note**
+<img src="/screenshots/create.png" alt="Home Screen" width="250"/>
+
+### **Note Detail**
+<img src="/screenshots/detail.png" alt="Home Screen" width="250"/>
